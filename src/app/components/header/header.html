@@ -1,0 +1,11 @@
+<nav class="nav-container">
+  <ul class="nav-container__list">
+    @for(link of navLinks; track link.path){
+    <li class="nav-container__list__link"  routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: true }">
+        
+      <a [routerLink]="link.path" >{{ link.title }}</a>
+    </li>
+    }
+  </ul>
+</nav>

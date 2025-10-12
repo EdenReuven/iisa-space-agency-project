@@ -1,0 +1,40 @@
+@use '../../styles/colors.scss' as *;
+@use '../../styles/functions.scss' as *;
+
+.nav-container {
+  background-color: $dark-color;
+  height: 50px;
+  display: flex;
+  align-items: center;
+
+  &__list {
+    display: flex;
+    width: 100%;
+    padding: 0 20px;
+    gap: 48px;
+    justify-content: center;
+
+    &__link {
+      &.active {
+        a {
+          color: $secondary-color;
+        }
+      }
+    }
+  }
+}
+
+@include desktop {
+  .nav-container {
+    height: 70px;
+
+    &__list {
+      gap: 24px;
+      justify-content: flex-start;
+
+      &__link {
+        font-size: 20px;
+      }
+    }
+  }
+}
