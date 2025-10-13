@@ -1,6 +1,6 @@
-import { navLink } from '../types';
+import { NavLink } from '../types';
 
-export const navLinks: navLink[] = [
+export const navLinks: NavLink[] = [
   { title: 'Registration', path: '' },
   { title: 'Dashboard', path: '/dashboard' },
 ];

@@ -1,1 +1,19 @@
-<p>landing-page works!</p>
+<div>
+  <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+    @for(field of fromFields; track field.name){
+    <mat-form-field appearance="outline">
+      <mat-label>{{ field.label }}</mat-label>
+      @if(field.type !== 'textarea'){
+      <input matInput [formControlName]="field.name" [type]="field.type" />
+      } @else {
+      <textarea matInput [formControlName]="field.name"></textarea>
+      } @if(getError(field.name)){
+      <mat-error>{{ getError(field.name) }}</mat-error>
+      }
+    </mat-form-field>
+    }
+    <button mat-raised-button color="primary" type="submit" [disabled]="registrationForm.invalid">
+      Send
+    </button>
+  </form>
+</div>

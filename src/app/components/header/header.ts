@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { navLink } from '../../types';
+import { NavLink } from '../../types';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
@@ -10,5 +10,5 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class Header {
 
-  @Input({required : true}) navLinks : navLink[] = [];
+  @Input({required : true}) navLinks : NavLink[] = [];
 }
