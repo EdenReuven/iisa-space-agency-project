@@ -1,6 +1,28 @@
-<div>
-  <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
-    @for(field of fromFields; track field.name){
+<div class="landing-page">
+  <h1 class="landing-page__title">Your Journey to the Stars Starts Here</h1>
+  <div class="landing-page__sub-title">Apply today, edit your submission anytime within 3 days</div>
+  <form class="landing-page__form" [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+    @for(field of fromFields; track field.name){ @if(field.name === 'profileImage'){
+    <div class="landing-page__form__profile-picture">
+    
+      <div class="landing-page__form__profile-picture__image-preview">
+        <img
+          class="landing-page__form__profile-picture__image-preview__picture"
+          [src]="selectedImg ? selectedImg : 'assets/placeholder.png'" 
+          alt="Profile Picture Preview"
+        />
+      </div>
+      
+      <div class="landing-page__form__profile-picture__image-upload">
+        <input
+          class="landing-page__form__profile-picture__image-upload__input"
+          [type]="field.type"
+          accept="image/png, image/jpeg"
+          (change)="onFileSelected($event)"
+        />
+      </div>
+    </div>
+    } @else {
     <mat-form-field appearance="outline">
       <mat-label>{{ field.label }}</mat-label>
       @if(field.type !== 'textarea'){
@@ -11,9 +33,9 @@
       <mat-error>{{ getError(field.name) }}</mat-error>
       }
     </mat-form-field>
-    }
+    } }
     <button mat-raised-button color="primary" type="submit" [disabled]="registrationForm.invalid">
-      Send
+      Apply Now
     </button>
   </form>
 </div>

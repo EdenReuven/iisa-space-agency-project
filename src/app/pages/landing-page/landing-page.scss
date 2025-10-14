@@ -1,0 +1,44 @@
+@use '../../styles/colors.scss' as *;
+
+.landing-page {
+  padding: 10px 20px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: center;
+
+  &__title {
+    color: $primary-color;
+  }
+
+  &__sub-title {
+    color: $dark-color;
+  }
+  
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+    &__profile-picture {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+      margin-top: 30px;
+
+      &__image-preview {
+        width: 150px;
+        height: 150px;
+        
+        &__picture {
+          border-radius: 50%;
+          object-fit: contain;
+          border: 2px solid $secondary-color;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+}

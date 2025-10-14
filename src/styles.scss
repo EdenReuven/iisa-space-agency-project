@@ -1,5 +1,6 @@
 @use '@angular/material' as mat;
 @use './app/styles/colors.scss' as *;
+@use './app/styles/functions.scss' as *;
 
 html {
   @include mat.theme(
@@ -19,6 +20,8 @@ body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
   background-color: $background-color;
+  height: calc(100dvh - 50px);
+  margin-top: 50px;
 }
 
 * {
@@ -47,4 +50,11 @@ button {
 html,
 body {
   height: 100%;
+}
+
+@include desktop {
+  body {
+    height: calc(100dvh - 70px);
+    margin-top: 70px;
+  }
 }

@@ -2,6 +2,12 @@ import { RegisterForm } from '../types';
 
 export const registerFields: RegisterForm[] = [
   {
+    name: 'profileImage',
+    label: 'Profile Image',
+    type: 'file',
+    required: false,
+  },
+  {
     name: 'fullName',
     label: 'FullName',
     type: 'text',
@@ -25,7 +31,7 @@ export const registerFields: RegisterForm[] = [
     label: 'Age',
     type: 'number',
     required: true,
-    minAge:18
+    minAge: 18,
   },
   {
     name: 'city',

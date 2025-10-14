@@ -15,6 +15,7 @@ import { RegisterForm } from '../../types/common';
 export class LandingPage implements OnInit {
   registrationForm!: FormGroup;
   fromFields: RegisterForm[] = registerFields;
+  selectedImg: string | ArrayBuffer | null = null;
 
   private fb = inject(FormBuilder);
 
@@ -53,7 +54,20 @@ export class LandingPage implements OnInit {
 
     return '';
   }
-  
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.selectedImg = reader.result;
+        this.registrationForm.patchValue({ profileImage: file });
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   onSubmit(): void {
     if (this.registrationForm.valid) {
       console.log('form  data:', this.registrationForm.value);

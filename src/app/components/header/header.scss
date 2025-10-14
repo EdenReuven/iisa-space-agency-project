@@ -6,6 +6,9 @@
   height: 50px;
   display: flex;
   align-items: center;
+  position: fixed;
+  width: 100%;
+  top: 0;
 
   &__list {
     display: flex;
