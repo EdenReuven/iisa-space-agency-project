@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { registerFields } from '../../utils';
 import { RegisterForm } from '../../types/common';
+import { storageService } from '../../services/storage.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -18,6 +19,7 @@ export class LandingPage implements OnInit {
   selectedImg: string | ArrayBuffer | null = null;
 
   private fb = inject(FormBuilder);
+  private storageService = inject(storageService);
 
   ngOnInit(): void {
     this._buildRegisterForm();
@@ -70,7 +72,9 @@ export class LandingPage implements OnInit {
 
   onSubmit(): void {
     if (this.registrationForm.valid) {
-      console.log('form  data:', this.registrationForm.value);
+      this.storageService.saveCandidate(this.registrationForm.value).subscribe(() => {
+        alert('Registration saved successfully!');
+      });
     } else console.log('form is invalid');
   }
 }
