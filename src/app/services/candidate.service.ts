@@ -1,0 +1,47 @@
+import { Injectable, signal } from '@angular/core';
+import { Candidate } from '../types';
+import { storageService } from './storage.service';
+
+@Injectable({ providedIn: 'root' })
+export class CandidateService {
+  candidates = signal<Candidate[]>([]);
+  private bc = new BroadcastChannel('candidates-channel');
+
+  constructor(private storageService: storageService) {
+    this.loadCandidate();
+    this.bc.onmessage = (event) => {
+      if (event.data?.type === 'update-candidate') {
+        this.loadCandidate();
+      }
+    };
+  }
+
+  private loadCandidate() {
+    this.storageService.getAllCandidates().subscribe((candidates) => {
+      this.candidates.set(candidates);
+    });
+  }
+
+  saveCandidate(candidate: Candidate) {
+    const candidatesList = this.candidates();
+    const foundIndex = candidatesList.findIndex((x) => x.email === candidate.email);
+
+    this.storageService.saveCandidate(candidate).subscribe(() => {
+      const updatedList =
+        foundIndex === -1
+          ? [...candidatesList, candidate]
+          : candidatesList.map((c) => (c.email === candidate.email ? candidate : c));
+      this.candidates.set(updatedList);
+
+      this.bc.postMessage({ type: 'update-candidate', candidate });
+    });
+  }
+
+  getSummary(candidate: Candidate) {
+    const city = candidate.city;
+    const hobbies = candidate.hobbies ?? '';
+    const age = candidate.age;
+
+    return `${age} years old, live in ${city} , love to ${hobbies}`;
+  }
+}

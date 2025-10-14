@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { registerFields } from '../../utils';
 import { RegisterForm } from '../../types/common';
-import { storageService } from '../../services/storage.service';
+import { CandidateService } from '../../services/candidate.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -19,7 +19,7 @@ export class LandingPage implements OnInit {
   selectedImg: string | ArrayBuffer | null = null;
 
   private fb = inject(FormBuilder);
-  private storageService = inject(storageService);
+  private candidateService = inject(CandidateService);
 
   ngOnInit(): void {
     this._buildRegisterForm();
@@ -57,24 +57,30 @@ export class LandingPage implements OnInit {
     return '';
   }
 
+  fileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(file);
+    });
+  }
+
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      const file = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.selectedImg = reader.result;
-        this.registrationForm.patchValue({ profileImage: file });
-      };
-      reader.readAsDataURL(file);
-    }
+    if (!input.files?.length) return;
+
+    const file = input.files[0];
+
+    this.fileToBase64(file).then((base64) => {
+      this.selectedImg = base64;
+      this.registrationForm.patchValue({ profileImage: this.selectedImg });
+    });
   }
 
   onSubmit(): void {
     if (this.registrationForm.valid) {
-      this.storageService.saveCandidate(this.registrationForm.value).subscribe(() => {
-        alert('Registration saved successfully!');
-      });
+      this.candidateService.saveCandidate(this.registrationForm.value);
     } else console.log('form is invalid');
   }
 }
