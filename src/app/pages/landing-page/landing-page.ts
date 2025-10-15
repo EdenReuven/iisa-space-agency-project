@@ -37,7 +37,6 @@ export class LandingPage implements OnInit {
       group[field.name] = ['', validators];
     }
     this.registrationForm = this.fb.group(group);
-    console.log(this.registrationForm);
   }
 
   getError(fieldName: string): string {

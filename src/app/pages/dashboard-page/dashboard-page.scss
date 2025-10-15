@@ -1,0 +1,35 @@
+@use '../../styles/colors.scss' as *;
+
+.dashboard {
+  text-align: center;
+  padding: 10px 20px;
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  &__title {
+    color: $primary-color;
+  }
+
+  &__sub-title {
+    color: $dark-color;
+  }
+  &__table-wrapper {
+    &__table {
+      border: 2px solid $secondary-color;
+      &__picture {
+        &__cell {
+          &__img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: contain;
+            border: 2px solid $secondary-color;
+          }
+        }
+      }
+      &__rows {
+        height: 60px;
+      }
+    }
+  }
+}
