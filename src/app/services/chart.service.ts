@@ -8,7 +8,7 @@ export class ChartService {
     canvas: HTMLCanvasElement,
     data: Record<string, number>,
     label: string,
-    type: 'bar' | 'pie' | 'line'
+    type: 'bar' | 'pie' | 'line' | 'doughnut'
   ): Chart {
     const ctx = canvas.getContext('2d');
     if (!ctx) throw new Error('Cannot get canvas context');
@@ -21,16 +21,16 @@ export class ChartService {
           {
             label: label,
             data: Object.values(data),
-            backgroundColor: this._getColors(Object.keys(data).length),
+            backgroundColor: this.getColors(Object.keys(data).length),
           },
         ],
       },
     });
   }
 
-  private _getColors(length: number) {
+  getColors(length: number) {
     const chartColors = [];
-    const colors = [' #1F77B4', '#FF7F0E', '#2CA02C', '#D62728', '#9467BD', '#8C564B'];
+    const colors = ['#4361EE', '#3A86FF', '#5BC0EB', '#9D4EDD', '#7209B7', '#B5179E'];
     for (let i = 0; i < length; i++) {
       chartColors.push(colors[i % colors.length]);
     }

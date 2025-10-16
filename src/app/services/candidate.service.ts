@@ -25,6 +25,7 @@ export class CandidateService {
   saveCandidate(candidate: Candidate) {
     const candidatesList = this.candidates();
     const foundIndex = candidatesList.findIndex((x) => x.email === candidate.email);
+    candidate.city = this.cityNameFormat(candidate.city);
 
     this.storageService.saveCandidate(candidate).subscribe(() => {
       const updatedList =
@@ -35,6 +36,13 @@ export class CandidateService {
 
       this.bc.postMessage({ type: 'update-candidate', candidate });
     });
+  }
+
+  cityNameFormat(city: string) {
+    return city
+      .split(' ')
+      .map((c) => c.charAt(0).toUpperCase() + c.slice(1))
+      .join('-');
   }
 
   getSummary(candidate: Candidate) {

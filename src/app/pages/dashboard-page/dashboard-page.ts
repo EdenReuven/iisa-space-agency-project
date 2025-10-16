@@ -17,11 +17,13 @@ export class DashboardPage implements AfterViewInit {
   private chartService = inject(ChartService);
 
   @ViewChild('ageChart') ageChartRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('cityChart') cityChartRef!: ElementRef<HTMLCanvasElement>;
 
   candidates = this.candidateService.candidates;
   displayedColumns: string[] = ['picture', 'name', 'email', 'summary'];
   dataSource = new MatTableDataSource<Candidate>([]);
   ageChart: Chart | null = null;
+  cityChart: Chart | null = null;
   ageGroups: Record<string, number> = {
     '18-25': 0,
     '26-35': 0,
@@ -34,6 +36,7 @@ export class DashboardPage implements AfterViewInit {
     effect(() => {
       this.dataSource.data = this.candidates();
       if (this.ageChart) this._updateAgeChart();
+      if (this.cityChart) this._updateCityChart();
     });
   }
 
@@ -43,6 +46,12 @@ export class DashboardPage implements AfterViewInit {
       this._buildAgeGroups(),
       'Candidates Ages Breakdown',
       'bar'
+    );
+    this.cityChart = this.chartService.initChart(
+      this.cityChartRef.nativeElement,
+      this._buildCityGroups(),
+      'Candidates cities Breakdown',
+      'doughnut'
     );
   }
 
@@ -62,6 +71,31 @@ export class DashboardPage implements AfterViewInit {
     });
 
     return this.ageGroups;
+  }
+
+  private _updateCityChart() {
+    if (!this.cityChart) return;
+    const cities = this._buildCityGroups();
+    const newLabels = Object.keys(cities);
+
+    this.cityChart.data.labels = newLabels;
+    this.cityChart.data.datasets[0].data = Object.values(cities);
+    this.cityChart.data.datasets[0].backgroundColor = this.chartService.getColors(newLabels.length);
+
+    this.cityChart.update();
+  }
+
+  private _buildCityGroups() {
+    const cityGroups: Record<string, number> = {};
+    this.candidates().forEach((c) => {
+      if (cityGroups[c.city]) {
+        cityGroups[c.city]++;
+      } else {
+        cityGroups[c.city] = 1;
+      }
+    });
+    console.log(cityGroups);
+    return cityGroups;
   }
 
   getSummary(candidate: Candidate) {
