@@ -5,6 +5,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { ChartService } from '../../services/chart.service';
 import { Chart } from 'chart.js';
+import { MapService } from '../../services/map.service';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -15,11 +16,14 @@ import { Chart } from 'chart.js';
 export class DashboardPage implements AfterViewInit {
   private candidateService = inject(CandidateService);
   private chartService = inject(ChartService);
+  private mapService = inject(MapService)
 
   @ViewChild('ageChart') ageChartRef!: ElementRef<HTMLCanvasElement>;
   @ViewChild('cityChart') cityChartRef!: ElementRef<HTMLCanvasElement>;
+ @ViewChild('map') mapContainer!: ElementRef;
 
   candidates = this.candidateService.candidates;
+  cities : string[] = [];
   displayedColumns: string[] = ['picture', 'name', 'email', 'summary'];
   dataSource = new MatTableDataSource<Candidate>([]);
   ageChart: Chart | null = null;
@@ -33,14 +37,20 @@ export class DashboardPage implements AfterViewInit {
   };
 
   constructor() {
-    effect(() => {
+    effect(async  () => {
       this.dataSource.data = this.candidates();
+      const citiesGroups = this._buildCityGroups();
+      this.cities = Object.keys(citiesGroups);
+       if (this.mapContainer?.nativeElement && this.cities.length > 0) {
+      await this.mapService.initMap(this.mapContainer.nativeElement);
+      await this.mapService.addCityNames(this.cities);
+    }
       if (this.ageChart) this._updateAgeChart();
       if (this.cityChart) this._updateCityChart();
     });
   }
 
-  ngAfterViewInit(): void {
+   ngAfterViewInit(): void  {
     this.ageChart = this.chartService.initChart(
       this.ageChartRef.nativeElement,
       this._buildAgeGroups(),
@@ -54,6 +64,8 @@ export class DashboardPage implements AfterViewInit {
       'doughnut'
     );
   }
+
+
 
   private _updateAgeChart() {
     if (!this.ageChart) return;
@@ -94,7 +106,6 @@ export class DashboardPage implements AfterViewInit {
         cityGroups[c.city] = 1;
       }
     });
-    console.log(cityGroups);
     return cityGroups;
   }
 
