@@ -1,4 +1,12 @@
-import { AfterViewInit, Component, effect, ElementRef, inject, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  effect,
+  ElementRef,
+  inject,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { CandidateService } from '../../services/candidate.service';
 import { Candidate } from '../../types';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -16,14 +24,15 @@ import { MapService } from '../../services/map.service';
 export class DashboardPage implements AfterViewInit {
   private candidateService = inject(CandidateService);
   private chartService = inject(ChartService);
-  private mapService = inject(MapService)
+  private mapService = inject(MapService);
 
   @ViewChild('ageChart') ageChartRef!: ElementRef<HTMLCanvasElement>;
   @ViewChild('cityChart') cityChartRef!: ElementRef<HTMLCanvasElement>;
- @ViewChild('map') mapContainer!: ElementRef;
+  @ViewChild('map') mapContainer!: ElementRef;
 
+  private isMapInitialized = signal(false);
   candidates = this.candidateService.candidates;
-  cities : string[] = [];
+  cities: string[] = [];
   displayedColumns: string[] = ['picture', 'name', 'email', 'summary'];
   dataSource = new MatTableDataSource<Candidate>([]);
   ageChart: Chart | null = null;
@@ -37,20 +46,23 @@ export class DashboardPage implements AfterViewInit {
   };
 
   constructor() {
-    effect(async  () => {
+    effect(async () => {
       this.dataSource.data = this.candidates();
-      const citiesGroups = this._buildCityGroups();
-      this.cities = Object.keys(citiesGroups);
-       if (this.mapContainer?.nativeElement && this.cities.length > 0) {
-      await this.mapService.initMap(this.mapContainer.nativeElement);
-      await this.mapService.addCityNames(this.cities);
-    }
+
       if (this.ageChart) this._updateAgeChart();
       if (this.cityChart) this._updateCityChart();
+
+      if (this.isMapInitialized()) {
+        const citiesGroups = this._buildCityGroups();
+        this.cities = Object.keys(citiesGroups);
+        if (this.cities.length > 0) {
+          await this.mapService.addCityNames(this.cities);
+        }
+      }
     });
   }
 
-   ngAfterViewInit(): void  {
+  ngAfterViewInit(): void {
     this.ageChart = this.chartService.initChart(
       this.ageChartRef.nativeElement,
       this._buildAgeGroups(),
@@ -63,9 +75,14 @@ export class DashboardPage implements AfterViewInit {
       'Candidates cities Breakdown',
       'doughnut'
     );
+
+    this.mapService
+      .initMap(this.mapContainer.nativeElement)
+      .then(() => {
+        this.isMapInitialized.set(true);
+      })
+      .catch((err) => console.error('Map init failed', err));
   }
-
-
 
   private _updateAgeChart() {
     if (!this.ageChart) return;

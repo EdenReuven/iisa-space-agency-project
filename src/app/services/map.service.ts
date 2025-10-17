@@ -53,6 +53,7 @@ export class MapService {
   }
 
   async addCityNames(cityNames: string[]): Promise<void> {
+    this.markers = [];
     for (const city of cityNames) {
       const coords = await this.geoCodeCity(city);
       console.log(city, coords);
