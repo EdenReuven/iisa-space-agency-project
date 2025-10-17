@@ -14,6 +14,7 @@ import { MatSort } from '@angular/material/sort';
 import { ChartService } from '../../services/chart.service';
 import { Chart } from 'chart.js';
 import { MapService } from '../../services/map.service';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -25,12 +26,14 @@ export class DashboardPage implements AfterViewInit {
   private candidateService = inject(CandidateService);
   private chartService = inject(ChartService);
   private mapService = inject(MapService);
+  private storageService = inject(StorageService)
 
   @ViewChild('ageChart') ageChartRef!: ElementRef<HTMLCanvasElement>;
   @ViewChild('cityChart') cityChartRef!: ElementRef<HTMLCanvasElement>;
   @ViewChild('map') mapContainer!: ElementRef;
 
   private isMapInitialized = signal(false);
+  totalVisits = signal<number>(0);
   candidates = this.candidateService.candidates;
   cities: string[] = [];
   displayedColumns: string[] = ['picture', 'name', 'email', 'summary'];
@@ -59,6 +62,9 @@ export class DashboardPage implements AfterViewInit {
           await this.mapService.addCityNames(this.cities);
         }
       }
+      this.storageService.getVisitors().subscribe((count)=>{
+        this.totalVisits.set(count)
+      })
     });
   }
 
@@ -128,5 +134,8 @@ export class DashboardPage implements AfterViewInit {
 
   getSummary(candidate: Candidate) {
     return this.candidateService.getSummary(candidate);
+  }
+  getMonitorString(){
+    return `Total Visits : ${this.totalVisits()} | Registered Candidates : ${this.candidates().length} `
   }
 }

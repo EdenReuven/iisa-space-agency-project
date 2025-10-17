@@ -1,3 +1,5 @@
+import { DBSchema } from "idb";
+
 export interface NavLink {
   title: string;
   path: string;
@@ -21,4 +23,14 @@ export interface Candidate {
   hobbies?: string;
   reason?: string;
   profileImage?: string | ArrayBuffer | null;
+}
+export interface IisaDB extends DBSchema {
+  candidates: {
+    key: string;
+    value: Candidate;
+  };
+  visitorsCounter: {
+    key: 'totalVisits';
+    value: number;
+  };
 }

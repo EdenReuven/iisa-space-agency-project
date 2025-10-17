@@ -1,13 +1,13 @@
 import { Injectable, signal } from '@angular/core';
 import { Candidate } from '../types';
-import { storageService } from './storage.service';
+import { StorageService } from './storage.service';
 
 @Injectable({ providedIn: 'root' })
 export class CandidateService {
   candidates = signal<Candidate[]>([]);
   private bc = new BroadcastChannel('candidates-channel');
 
-  constructor(private storageService: storageService) {
+  constructor(private storageService: StorageService) {
     this.loadCandidate();
     this.bc.onmessage = (event) => {
       if (event.data?.type === 'update-candidate') {

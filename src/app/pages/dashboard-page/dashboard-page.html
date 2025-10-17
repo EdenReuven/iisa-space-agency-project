@@ -1,6 +1,9 @@
 <div class="dashboard">
   <h1 class="dashboard__title">IISA Management Dashboard</h1>
   <p class="dashboard__subtitle">Monitor and manage candidates for Israel’s first space flight</p>
+  <div class="dashboard__monitor">
+    <p>{{getMonitorString()}}</p>
+  </div>
   <div class="dashboard__table-wrapper">
     <table class="dashboard__table-wrapper__table" mat-table [dataSource]="dataSource" matSort>
       <ng-container class="dashboard__table-wrapper__table__picture" matColumnDef="picture">

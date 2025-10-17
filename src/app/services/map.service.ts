@@ -56,7 +56,6 @@ export class MapService {
     this.markers = [];
     for (const city of cityNames) {
       const coords = await this.geoCodeCity(city);
-      console.log(city, coords);
       if (!coords) continue;
 
       const marker = new google.maps.Marker({
