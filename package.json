@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "prebuild:prod": "node scripts/set-env.js",
+    "build:prod": "ng build --configuration production"
   },
   "prettier": {
     "printWidth": 100,
@@ -53,6 +55,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "replace-in-file": "^8.3.0",
     "typescript": "~5.9.2"
   }
 }
