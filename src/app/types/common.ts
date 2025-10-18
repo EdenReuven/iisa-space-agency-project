@@ -23,6 +23,7 @@ export interface Candidate {
   hobbies?: string;
   reason?: string;
   profileImage?: string | ArrayBuffer | null;
+  createdDate: Date;
 }
 export interface IisaDB extends DBSchema {
   candidates: {

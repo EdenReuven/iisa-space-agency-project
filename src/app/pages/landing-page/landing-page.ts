@@ -81,7 +81,8 @@ export class LandingPage implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.registrationForm.valid)
+    if (this.registrationForm.valid) {
       this.candidateService.saveCandidate(this.registrationForm.value);
+    }
   }
 }

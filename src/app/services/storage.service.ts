@@ -11,7 +11,7 @@ export class StorageService {
   constructor() {
     this.db$ = defer(() =>
       from(
-        openDB<IisaDB>('iisa-db', 3, {
+        openDB<IisaDB>('iisa-db', 4, {
           upgrade(db) {
             if (!db.objectStoreNames.contains('candidates')) {
               db.createObjectStore('candidates', { keyPath: 'email' });

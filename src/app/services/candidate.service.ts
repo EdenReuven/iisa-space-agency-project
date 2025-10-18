@@ -27,11 +27,15 @@ export class CandidateService {
     const foundIndex = candidatesList.findIndex((x) => x.email === candidate.email);
     candidate.city = this.cityNameFormat(candidate.city);
 
+    candidate.createdDate = foundIndex === -1 ? new Date() : candidatesList[foundIndex].createdDate;
+    if (!this.isUpdateAllowed(candidate.createdDate)) return;
+
     this.storageService.saveCandidate(candidate).subscribe(() => {
       const updatedList =
         foundIndex === -1
           ? [...candidatesList, candidate]
           : candidatesList.map((c) => (c.email === candidate.email ? candidate : c));
+
       this.candidates.set(updatedList);
 
       this.bc.postMessage({ type: 'update-candidate', candidate });
@@ -51,5 +55,13 @@ export class CandidateService {
     const age = candidate.age;
 
     return `${age} years old, live in ${city} , love to ${hobbies}`;
+  }
+
+  isUpdateAllowed(submittedDate: Date) {
+    const now = new Date();
+    const threeDays = 3 * 24 * 60 * 60 * 1000;
+    const difference = now.getTime() - submittedDate.getTime();
+
+    return difference < threeDays;
   }
 }
