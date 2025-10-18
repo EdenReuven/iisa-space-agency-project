@@ -17,7 +17,10 @@ import { StorageService } from '../../services/storage.service';
 export class LandingPage implements OnInit {
   registrationForm!: FormGroup;
   fromFields: RegisterForm[] = registerFields;
-  selectedImg: string | ArrayBuffer | null = null;
+  selectedImg: string | ArrayBuffer | null | undefined = null;
+  successMessage: string = '';
+  errorMessage: string = '';
+  formType: 'new' | 'emailOnly' | 'edit' = 'new';
 
   private fb = inject(FormBuilder);
   private storage = inject(StorageService);
@@ -80,9 +83,68 @@ export class LandingPage implements OnInit {
     });
   }
 
+  switchToCheckEmail() {
+    this.formType = 'emailOnly';
+    this.registrationForm.reset();
+    this.registrationForm.get('email')?.setValue('');
+  }
+
+  switchToNewForm() {
+    this.errorMessage = '';
+    this.formType = 'new';
+    this.registrationForm.get('email')?.enable();
+    this.resetForm();
+  }
+
+  resetForm() {
+    this.formType = 'new';
+    this.registrationForm.reset();
+    this.registrationForm.get('email')?.enable();
+    this.selectedImg = null;
+    Object.keys(this.registrationForm.controls).forEach((key) => {
+      this.registrationForm.get(key)?.markAsUntouched();
+      this.registrationForm.get(key)?.setErrors(null);
+      this.registrationForm.get(key)?.markAsPristine();
+    });
+  }
+
   onSubmit(): void {
     if (this.registrationForm.valid) {
-      this.candidateService.saveCandidate(this.registrationForm.value);
+      this.candidateService.saveCandidate(this.registrationForm.getRawValue());
+      this.successMessage =
+        this.formType === 'edit'
+          ? 'Your registration has been updated.'
+          : 'You have successfully registered.';
+      this.resetForm();
+      setTimeout(() => {
+        this.successMessage = '';
+      }, 10000);
+    }
+  }
+
+  onEmailSubmit(): void {
+    const exist = this.candidateService
+      .candidates()
+      .find((c) => c.email === this.registrationForm.get('email')?.value);
+    if (exist) {
+      this.formType = 'edit';
+      this.registrationForm.setValue({
+        profileImage: exist.profileImage,
+        fullName: exist.fullName,
+        email: exist.email,
+        phone: exist.phone,
+        age: exist.age,
+        city: exist.city,
+        hobbies: exist.hobbies,
+        reason: exist.reason,
+      });
+      this.selectedImg = exist.profileImage;
+      this.registrationForm.get('email')?.disable();
+    } else {
+      this.errorMessage = 'The email does not exist. Please register.';
+      setTimeout(() => {
+        this.successMessage = '';
+      }, 30000);
     }
   }
 }

@@ -1,18 +1,27 @@
 <div class="landing-page">
   <h1 class="landing-page__title">Your Journey to the Stars Starts Here</h1>
   <div class="landing-page__sub-title">Apply today, edit your submission anytime within 3 days</div>
-  <form class="landing-page__form" [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
-    @for(field of fromFields; track field.name){ @if(field.name === 'profileImage'){
+  @if (formType === 'new') {
+  <div class="landing-page__switch-form" (click)="switchToCheckEmail()">
+    Have you already registered?
+  </div>
+  }
+  <form
+    class="landing-page__form"
+    [formGroup]="registrationForm"
+    (ngSubmit)="formType === 'new' || formType === 'edit' ? onSubmit() : onEmailSubmit()"
+  >
+    @if(formType !== 'emailOnly'){ @for(field of fromFields; track field.name){ @if(field.name ===
+    'profileImage'){
     <div class="landing-page__form__profile-picture">
-    
       <div class="landing-page__form__profile-picture__image-preview">
         <img
           class="landing-page__form__profile-picture__image-preview__picture"
-          [src]="selectedImg ? selectedImg : 'assets/placeholder.png'" 
+          [src]="selectedImg ? selectedImg : 'assets/placeholder.png'"
           alt="Profile Picture Preview"
         />
       </div>
-      
+
       <div class="landing-page__form__profile-picture__image-upload">
         <input
           class="landing-page__form__profile-picture__image-upload__input"
@@ -26,16 +35,36 @@
     <mat-form-field appearance="outline">
       <mat-label>{{ field.label }}</mat-label>
       @if(field.type !== 'textarea'){
-      <input matInput [formControlName]="field.name" [type]="field.type" />
+      <input
+        matInput
+        [formControlName]="field.name"
+        [type]="field.type"
+        [readonly]="formType === 'edit' && field.name === 'email'"
+      />
       } @else {
       <textarea matInput [formControlName]="field.name"></textarea>
       } @if(getError(field.name)){
       <mat-error>{{ getError(field.name) }}</mat-error>
       }
     </mat-form-field>
-    } }
+    } } @if(successMessage){
+    <div class="landing-page__form__success-message">{{ successMessage }}</div>
+    }
+
     <button mat-raised-button color="primary" type="submit" [disabled]="registrationForm.invalid">
       Apply Now
     </button>
+
+    } @else{
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="text" />
+    </mat-form-field>
+    @if(errorMessage){
+    <div class="landing-page__form__error-message">{{ errorMessage }}</div>
+    <button mat-raised-button color="primary" (click)="switchToNewForm()">Register Now</button>
+    }
+    <button mat-raised-button color="primary" type="submit">check if exists</button>
+    }
   </form>
 </div>

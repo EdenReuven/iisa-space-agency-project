@@ -144,7 +144,7 @@ export class DashboardPage implements AfterViewInit {
     return this.candidateService.getSummary(candidate);
   }
 
-  onRowClick(row: Candidate, index: number) {
+  onRowClick(index: number) {
     let data: CardData[] = [];
     this.candidates().forEach((c) => {
       data.push({

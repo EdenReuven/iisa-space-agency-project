@@ -36,10 +36,6 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Full Name</th>
         <td mat-cell *matCellDef="let candidate">{{ candidate.fullName }}</td>
       </ng-container>
-      <!-- <ng-container matColumnDef="email" class="dashboard__table-wrapper__table__email">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
-        <td mat-cell *matCellDef="let candidate">{{ candidate.email }}</td>
-      </ng-container> -->
       <ng-container matColumnDef="summary" class="dashboard__table-wrapper__table__summary">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Summary</th>
         <td mat-cell *matCellDef="let candidate">{{ getSummary(candidate) }}</td>
@@ -50,7 +46,7 @@
         class="dashboard__table-wrapper__table__rows"
         mat-row
         *matRowDef="let row; let i = index; columns: displayedColumns"
-        (click)="onRowClick(row, i)"
+        (click)="onRowClick(i)"
       ></tr>
     </table>
   </div>
