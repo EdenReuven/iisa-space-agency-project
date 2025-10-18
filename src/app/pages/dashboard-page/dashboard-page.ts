@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   Component,
+  computed,
   effect,
   ElementRef,
   inject,
@@ -17,10 +18,11 @@ import { MapService } from '../../services/map.service';
 import { StorageService } from '../../services/storage.service';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupCard } from '../../components';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-dashboard-page',
-  imports: [MatTableModule, MatSort],
+  imports: [MatTableModule, MatSort, MatInputModule],
   templateUrl: './dashboard-page.html',
   styleUrl: './dashboard-page.scss',
 })
@@ -36,9 +38,10 @@ export class DashboardPage implements AfterViewInit {
 
   private isMapInitialized = signal(false);
   totalVisits = signal<number>(0);
+  filterTerm = signal('');
   candidates = this.candidateService.candidates;
   cities: string[] = [];
-  displayedColumns: string[] = ['picture', 'name', 'email', 'summary'];
+  displayedColumns: string[] = ['picture', 'name', 'summary'];
   dataSource = new MatTableDataSource<Candidate>([]);
   ageChart: Chart | null = null;
   cityChart: Chart | null = null;
@@ -167,5 +170,23 @@ export class DashboardPage implements AfterViewInit {
     return `Total Visits : ${this.totalVisits()} | Registered Candidates : ${
       this.candidates().length
     } `;
+  }
+
+  filterCandidate(): Candidate[] {
+    const term = this.filterTerm().toLowerCase().trim();
+    if (!term) return this.candidates();
+
+    return this.candidates().filter(
+      (c) =>
+        c.fullName.toLowerCase().includes(term) ||
+        c.city.toLowerCase().includes(term) ||
+        c.phone.toLowerCase().includes(term) ||
+        +c.age === +term
+    );
+  }
+  applyFilter(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.filterTerm.set(value);
+    this.dataSource.data = this.filterCandidate();
   }
 }
