@@ -8,13 +8,15 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CandidateService } from '../../services/candidate.service';
-import { Candidate } from '../../types';
+import { Candidate, CardData } from '../../types';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { ChartService } from '../../services/chart.service';
 import { Chart } from 'chart.js';
 import { MapService } from '../../services/map.service';
 import { StorageService } from '../../services/storage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { PopupCard } from '../../components';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -48,7 +50,7 @@ export class DashboardPage implements AfterViewInit {
     '60+': 0,
   };
 
-  constructor() {
+  constructor(private dialog: MatDialog) {
     effect(async () => {
       this.dataSource.data = this.candidates();
 
@@ -138,6 +140,29 @@ export class DashboardPage implements AfterViewInit {
   getSummary(candidate: Candidate) {
     return this.candidateService.getSummary(candidate);
   }
+
+  onRowClick(row: Candidate, index: number) {
+    let data: CardData[] = [];
+    this.candidates().forEach((c) => {
+      data.push({
+        title: c.fullName,
+        content: [
+          { label: 'Email:', content: c.email },
+          { label: 'Phone:', content: c.phone },
+          { label: 'Age:', content: c.age },
+          { label: 'City:', content: c.city },
+          { label: 'Hobbies:', content: c.hobbies },
+          { label: 'Reason:', content: c.reason },
+        ],
+        img: c.profileImage,
+      });
+    });
+    this.dialog.open(PopupCard, {
+      data,
+      panelClass: 'custom-dialog-container',
+    }).componentInstance.currentIndex = index;
+  }
+
   getMonitorString() {
     return `Total Visits : ${this.totalVisits()} | Registered Candidates : ${
       this.candidates().length

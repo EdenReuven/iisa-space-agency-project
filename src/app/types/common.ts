@@ -1,4 +1,4 @@
-import { DBSchema } from "idb";
+import { DBSchema } from 'idb';
 
 export interface NavLink {
   title: string;
@@ -33,4 +33,10 @@ export interface IisaDB extends DBSchema {
     key: 'totalVisits';
     value: number;
   };
+}
+
+export interface CardData {
+  title: string;
+  content: { label: string; content: string | number | undefined }[];
+  img: string | undefined | ArrayBuffer | null;
 }

@@ -1,0 +1,24 @@
+
+<div class="popup-card">
+    <button class="popup-card__close-btn" (click)="close()">x</button>
+    <div class="popup-card__content">
+        <div class="popup-card__content__header">
+            <img  class="popup-card__content__header__avatar" [src]="data[currentIndex].img || 'assets/placeholder.png'">
+            <h1 class="popup-card__content__header__title">{{data[currentIndex].title}}</h1>
+        </div>
+        <div class="popup-card__content__items" >
+            @for (item of data[currentIndex].content; track $index) {
+                <div class="popup-card__content__items__item">
+                    <div class="popup-card__content__items__item__label" >{{item.label}}</div>
+                    <div class="popup-card__content__items__item__content">{{item.content}}</div>
+                </div>
+                
+            }
+        </div>
+    </div>
+    <div class="popup-card__nav-btns">
+        <button class="popup-card__nav-btns__prev" (click)="prev()" [disabled]="currentIndex === 0">←</button>
+        <button class="popup-card__nav-btns__next" (click)="next()" [disabled]="currentIndex === data.length -1">→</button>
+    </div>
+
+</div>
