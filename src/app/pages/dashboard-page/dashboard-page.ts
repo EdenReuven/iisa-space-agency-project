@@ -26,7 +26,7 @@ export class DashboardPage implements AfterViewInit {
   private candidateService = inject(CandidateService);
   private chartService = inject(ChartService);
   private mapService = inject(MapService);
-  private storageService = inject(StorageService)
+  private storageService = inject(StorageService);
 
   @ViewChild('ageChart') ageChartRef!: ElementRef<HTMLCanvasElement>;
   @ViewChild('cityChart') cityChartRef!: ElementRef<HTMLCanvasElement>;
@@ -62,9 +62,12 @@ export class DashboardPage implements AfterViewInit {
           await this.mapService.addCityNames(this.cities);
         }
       }
-      this.storageService.getVisitors().subscribe((count)=>{
-        this.totalVisits.set(count)
-      })
+    });
+    this.storageService.bc.onmessage = (event) => {
+      this.totalVisits.set(event.data);
+    };
+    this.storageService.getVisitors().subscribe((count) => {
+      this.totalVisits.set(count);
     });
   }
 
@@ -135,7 +138,9 @@ export class DashboardPage implements AfterViewInit {
   getSummary(candidate: Candidate) {
     return this.candidateService.getSummary(candidate);
   }
-  getMonitorString(){
-    return `Total Visits : ${this.totalVisits()} | Registered Candidates : ${this.candidates().length} `
+  getMonitorString() {
+    return `Total Visits : ${this.totalVisits()} | Registered Candidates : ${
+      this.candidates().length
+    } `;
   }
 }

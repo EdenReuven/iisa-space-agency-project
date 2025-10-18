@@ -24,7 +24,7 @@ export class LandingPage implements OnInit {
   private candidateService = inject(CandidateService);
 
   ngOnInit(): void {
-    this.storage.updateVisits().subscribe();
+    this.storage.incrementVisits();
     this._buildRegisterForm();
   }
 

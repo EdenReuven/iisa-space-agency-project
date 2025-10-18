@@ -6,6 +6,7 @@ import { defer, from, map, Observable, shareReplay, switchMap } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class StorageService {
   private db$: Observable<IDBPDatabase<IisaDB>>;
+  bc = new BroadcastChannel('visits');
 
   constructor() {
     this.db$ = defer(() =>
@@ -59,6 +60,13 @@ export class StorageService {
         )
       )
     );
+  }
+  incrementVisits(): void {
+    this.updateVisits().subscribe(() => {
+      this.getVisitors().subscribe((count) => {
+        this.bc.postMessage(count);
+      });
+    });
   }
 
   getVisitors(): Observable<number> {
