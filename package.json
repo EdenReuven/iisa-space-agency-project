@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "deploy": "ng build --configuration production --base-href \"/iisa-space-agency-project/\" && npx gh-pages -d dist/iisa-space-agency-project/browser"
   },
   "prettier": {
     "printWidth": 100,
