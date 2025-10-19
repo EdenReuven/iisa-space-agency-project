@@ -24,7 +24,12 @@ export class ChartService {
             backgroundColor: this.getColors(Object.keys(data).length),
           },
         ],
+       
       },
+      options:{
+        responsive : true,
+         maintainAspectRatio: false,
+      }
     });
   }
 

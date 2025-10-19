@@ -1,18 +1,32 @@
 <div class="landing-page">
-  <h1 class="landing-page__title">Your Journey to the Stars Starts Here</h1>
-  <div class="landing-page__sub-title">Apply today, edit your submission anytime within 3 days</div>
-  @if (formType === 'new') {
-  <div class="landing-page__switch-form" (click)="switchToCheckEmail()">
-    Have you already registered?
+  <div class="landing-page__intro">
+    <h1 class="landing-page__intro__title">Zero Gravity, Maximum Fun!</h1>
+   
+    
+    <div class="landing-page__intro__text">
+      <p>Sign up today and step into the shoes of Israel’s first imaginary astronauts!</p>
+      <p>Connect with the crew, explore fun space challenges, and get exclusive updates on our mission.</p>
+      <p>Quick, easy, and a little bit magical — your journey to the stars starts here</p>
+    </div>
+    <div class="landing-page__intro__sub-title">{{formType !== 'emailOnly' ? 'Apply today, edit your submission anytime within 3 days' : 'If your email is on our list , you can edit your information only within 3 days of registration'}}</div>
+
+    @if (formType === 'new') {
+    <div class="landing-page__switch-form" (click)="switchToCheckEmail()">
+      <p class="landing-page__switch-form__main">Already registered?</p>
+      <p class="landing-page__switch-form__sub">click here to update your form - only within 3 days</p>
+    </div>
+    }
   </div>
-  }
+
+
   <form
     class="landing-page__form"
     [formGroup]="registrationForm"
+    [ngClass]="{'email-form': formType === 'emailOnly'}"
     (ngSubmit)="formType === 'new' || formType === 'edit' ? onSubmit() : onEmailSubmit()"
   >
-    @if(formType !== 'emailOnly'){ @for(field of fromFields; track field.name){ @if(field.name ===
-    'profileImage'){
+    @if(formType !== 'emailOnly'){ @for(field of fromFields; track field.name){
+    @if(field.name==='profileImage'){
     <div class="landing-page__form__profile-picture">
       <div class="landing-page__form__profile-picture__image-preview">
         <img
@@ -31,6 +45,7 @@
         />
       </div>
     </div>
+
     } @else {
     <mat-form-field appearance="outline">
       <mat-label>{{ field.label }}</mat-label>
@@ -47,24 +62,47 @@
       <mat-error>{{ getError(field.name) }}</mat-error>
       }
     </mat-form-field>
+
     } } @if(successMessage){
     <div class="landing-page__form__success-message">{{ successMessage }}</div>
     }
 
-    <button mat-raised-button color="primary" type="submit" [disabled]="registrationForm.invalid">
-      Apply Now
-    </button>
+    <div class="landing-page__form__submit-btn">
+      <button
+        class="landing-page__form__submit-btn__btn"
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="registrationForm.invalid"
+      >
+        Apply Now
+      </button>
+    </div>
 
     } @else{
-    <mat-form-field appearance="outline">
-      <mat-label>Email</mat-label>
-      <input matInput formControlName="email" type="text" />
-    </mat-form-field>
+      <div class="landing-page__form__only-email">
+        <mat-form-field appearance="outline" >
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" type="text" />
+        </mat-form-field>
+
+      </div>
     @if(errorMessage){
     <div class="landing-page__form__error-message">{{ errorMessage }}</div>
-    <button mat-raised-button color="primary" (click)="switchToNewForm()">Register Now</button>
+    <div class="landing-page__form__register-btn">
+      <button class="landing-page__form__register-btn_btn" mat-raised-button color="primary" (click)="switchToNewForm()">Register Now</button>
+    </div>
     }
-    <button mat-raised-button color="primary" type="submit">check if exists</button>
+    <div class="landing-page__form__check-btn">
+      <button
+        class="landing-page__form__check-btn__btn"
+        mat-raised-button
+        color="primary"
+        type="submit"
+      >
+        check if exists
+      </button>
+    </div>
     }
   </form>
 </div>

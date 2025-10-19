@@ -1,60 +1,94 @@
 <div class="dashboard">
-  <h1 class="dashboard__title">IISA Management Dashboard</h1>
-  <p class="dashboard__subtitle">Monitor and manage candidates for Israel’s first space flight</p>
-  <div class="dashboard__monitor">
-    <p>{{ getMonitorString() }}</p>
-  </div>
-
-  <div class="dashboard__table-wrapper">
-    <div class="dashboard__table-wrapper__search">
-      <mat-form-field class="dashboard__table-wrapper__search__field" appearance="outline">
-        <mat-label>Search candidates</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Search by name, city, age..." />
-      </mat-form-field>
+  <div class="dashboard__header">
+    <h1 class="dashboard__header__title">IISA Management Dashboard</h1>
+    <p class="dashboard__header__sub-title">
+      Monitor and manage candidates for Israel’s first space flight
+    </p>
+    <div class="dashboard__header__monitor">
+      <p>{{ getMonitorString() }}</p>
     </div>
-    <table class="dashboard__table-wrapper__table" mat-table [dataSource]="dataSource" matSort>
-      <ng-container class="dashboard__table-wrapper__table__picture" matColumnDef="picture">
-        <th
-          class="dashboard__table-wrapper__table__picture__col"
-          mat-header-cell
-          *matHeaderCellDef
-        ></th>
-        <td
-          class="dashboard__table-wrapper__table__picture__cell"
-          mat-cell
-          *matCellDef="let candidate"
+  </div>
+
+  <div class="dashboard__dashboard-content">
+    <div class="dashboard__dashboard-content__table-wrapper">
+      <div class="dashboard__dashboard-content__table-wrapper__search">
+        <mat-form-field
+          class="dashboard__dashboard-content__table-wrapper__search__field"
+          appearance="outline"
         >
-          <img
-            class="dashboard__table-wrapper__table__picture__cell__img"
-            [src]="candidate.profileImage || 'assets/placeholder.png'"
-            alt="profile image"
+          <mat-label>Search candidates</mat-label>
+          <input
+            matInput
+            (keyup)="applyFilter($event)"
+            placeholder="Search by name, city, age..."
           />
-        </td>
-      </ng-container>
+        </mat-form-field>
+      </div>
 
-      <ng-container matColumnDef="name" class="dashboard__table-wrapper__table__name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Full Name</th>
-        <td mat-cell *matCellDef="let candidate">{{ candidate.fullName }}</td>
-      </ng-container>
-      <ng-container matColumnDef="summary" class="dashboard__table-wrapper__table__summary">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Summary</th>
-        <td mat-cell *matCellDef="let candidate">{{ getSummary(candidate) }}</td>
-      </ng-container>
+      <div class="dashboard__dashboard-content__table-wrapper__container">
+        <table
+          class="dashboard__dashboard-content__table-wrapper__container__table"
+          mat-table
+          [dataSource]="dataSource"
+          matSort
+        >
+          <ng-container
+            class="dashboard__table-wrapper__container__table__picture"
+            matColumnDef="picture"
+          >
+            <th
+              class="dashboard__dashboard-content__table-wrapper__container__table__picture__col"
+              mat-header-cell
+              *matHeaderCellDef
+            ></th>
+            <td
+              class="dashboard__dashboard-content__table-wrapper__container__table__picture__cell"
+              mat-cell
+              *matCellDef="let candidate"
+            >
+              <img
+                class="dashboard__dashboard-content__table-wrapper__container__table__picture__cell__img"
+                [src]="candidate.profileImage || 'assets/placeholder.png'"
+                alt="profile image"
+              />
+            </td>
+          </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr
-        class="dashboard__table-wrapper__table__rows"
-        mat-row
-        *matRowDef="let row; let i = index; columns: displayedColumns"
-        (click)="onRowClick(i)"
-      ></tr>
-    </table>
+          <ng-container
+            matColumnDef="name"
+            class="dashboard__dashboard-content__table-wrapper__container__table__name"
+          >
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Full Name</th>
+            <td mat-cell *matCellDef="let candidate">{{ candidate.fullName }}</td>
+          </ng-container>
+          <ng-container
+            matColumnDef="summary"
+            class="dashboard__dashboard-content__table-wrapper__container__table__summary"
+          >
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Summary</th>
+            <td class="dashboard__dashboard-content__table-wrapper__container__table__summary__cell" mat-cell *matCellDef="let candidate">{{ getSummary(candidate) }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <div>
+            <tr
+              class="dashboard__dashboard-content__table-wrapper__container__table__rows"
+              mat-row
+              *matRowDef="let row; let i = index; columns: displayedColumns"
+              (click)="onRowClick(i)"
+            ></tr>
+          </div>
+        </table>
+      </div>
+    </div>
+    <div class="dashboard__dashboard-content__map" #map></div>
   </div>
-  <div class="chart">
-    <canvas #ageChart></canvas>
+  <div class="dashboard__charts">
+    <div class="dashboard__charts__age-chart">
+      <canvas #ageChart></canvas>
+    </div>
+    <div class="dashboard__charts__city-chart">
+      <canvas #cityChart></canvas>
+    </div>
   </div>
-  <div class="chart">
-    <canvas #cityChart></canvas>
-  </div>
-  <div #map style="width: 100%; height: 500px"></div>
 </div>

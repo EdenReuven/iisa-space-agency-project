@@ -7,10 +7,11 @@ import { registerFields } from '../../utils';
 import { RegisterForm } from '../../types/common';
 import { CandidateService } from '../../services/candidate.service';
 import { StorageService } from '../../services/storage.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-landing-page',
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule,CommonModule],
   templateUrl: './landing-page.html',
   styleUrls: ['./landing-page.scss'],
 })

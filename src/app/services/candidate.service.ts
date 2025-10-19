@@ -54,7 +54,7 @@ export class CandidateService {
     const hobbies = candidate.hobbies ?? '';
     const age = candidate.age;
 
-    return `${age} years old, live in ${city} , love to ${hobbies}`;
+    return `${age} years old, live in ${city}${hobbies ? `,love ${hobbies}` : ``}`;
   }
 
   isUpdateAllowed(submittedDate: Date) {
