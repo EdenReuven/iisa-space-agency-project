@@ -153,12 +153,12 @@ export class DashboardPage implements AfterViewInit {
       data.push({
         title: c.fullName,
         content: [
-          { label: 'Email:', content: c.email },
-          { label: 'Phone:', content: c.phone },
-          { label: 'Age:', content: c.age },
-          { label: 'City:', content: c.city },
-          { label: 'Hobbies:', content: c.hobbies },
-          { label: 'Reason:', content: c.reason },
+          { label: 'Email:', content: c.email , type :'input'},
+          { label: 'Phone:', content: c.phone, type :'input' },
+          { label: 'Age:', content: c.age, type :'input' },
+          { label: 'City:', content: c.city , type :'input'},
+          { label: 'Hobbies:', content: c.hobbies, type :'textarea' },
+          { label: 'Reason:', content: c.reason , type :'textarea'},
         ],
         img: c.profileImage,
       });

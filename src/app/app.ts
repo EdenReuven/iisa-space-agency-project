@@ -7,7 +7,7 @@ import { filter, map } from 'rxjs';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet , Header ],
+  imports: [RouterOutlet , Header, ],
   templateUrl: './app.html',
 })
 export class App {

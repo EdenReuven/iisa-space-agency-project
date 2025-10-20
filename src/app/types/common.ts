@@ -39,6 +39,6 @@ export interface IisaDB extends DBSchema {
 
 export interface CardData {
   title: string;
-  content: { label: string; content: string | number | undefined }[];
+  content: { label: string; content: string | number | undefined , type:'input'| 'textarea' }[];
   img: string | undefined | ArrayBuffer | null;
 }

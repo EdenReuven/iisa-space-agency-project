@@ -56,11 +56,6 @@
         max-height: 400px;
         overflow: auto;
 
-        &::-webkit-scrollbar {
-          width: 0px;
-          background: transparent;
-        }
-
         &__table {
           &__picture {
             &__cell {
@@ -74,6 +69,11 @@
             }
           }
 
+          &__name {
+            &__cell {
+              text-transform: capitalize;
+            }
+          }
           &__summary {
             &__cell {
               max-width: 300px;

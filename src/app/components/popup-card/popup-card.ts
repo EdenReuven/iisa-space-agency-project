@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Inject, inject, Input, Output } from '@angular/core';
 import { CardData } from '../../types';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-popup-card',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './popup-card.html',
   styleUrl: './popup-card.scss',
 })

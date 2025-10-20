@@ -22,6 +22,10 @@ export class CandidateService {
     });
   }
 
+  checkIfExist(email: string) {
+    return this.candidates().find((c) => c.email === email);
+  }
+
   saveCandidate(candidate: Candidate) {
     const candidatesList = this.candidates();
     const foundIndex = candidatesList.findIndex((x) => x.email === candidate.email);

@@ -3,7 +3,7 @@
 
 .popup-card {
   width: 400px;
-  height: 400px;
+  max-height: 70dvh;
   flex-direction: column;
   justify-content: space-between;
   display: flex;
@@ -21,7 +21,7 @@
   }
 
   &__content {
-    padding: 20px 20px 5px;
+    padding: 30px 30px 5px;
 
     &__header {
       display: flex;
@@ -30,6 +30,7 @@
 
       &__title {
         color: $primary-color;
+        text-transform: capitalize;
       }
 
       &__avatar {
@@ -47,7 +48,7 @@
       margin-top: 20px;
       color: $dark-color;
       overflow: auto;
-      max-height: 220px;
+      max-height: 400px;
 
       &__item {
         display: flex;
@@ -72,6 +73,7 @@
       background: transparent;
       color: $primary-color;
       font-weight: 600;
+      cursor: pointer;
 
       &:disabled {
         color: $natural-color;
@@ -84,7 +86,7 @@
 @include desktop {
   .popup-card {
     width: 550px;
-    height: 350px;
+    max-height: 100%;
 
     &__content {
       &__header {
@@ -101,6 +103,9 @@
         grid-column-gap: 15px;
         grid-row-gap: 10px;
         max-height: 350px;
+        & .long{
+          grid-column: 1 / -1;
+        }
       }
     }
   }

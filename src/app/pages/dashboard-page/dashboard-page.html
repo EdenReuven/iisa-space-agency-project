@@ -59,7 +59,7 @@
             class="dashboard__dashboard-content__table-wrapper__container__table__name"
           >
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Full Name</th>
-            <td mat-cell *matCellDef="let candidate">{{ candidate.fullName }}</td>
+            <td class="dashboard__dashboard-content__table-wrapper__container__table__name__cell" mat-cell *matCellDef="let candidate">{{ candidate.fullName }}</td>
           </ng-container>
           <ng-container
             matColumnDef="summary"

@@ -4,14 +4,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { registerFields } from '../../utils';
-import { RegisterForm } from '../../types/common';
+import { Candidate, RegisterForm } from '../../types/common';
 import { CandidateService } from '../../services/candidate.service';
 import { StorageService } from '../../services/storage.service';
 import { CommonModule } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialog } from '../../components';
 
 @Component({
   selector: 'app-landing-page',
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule,CommonModule],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, CommonModule],
   templateUrl: './landing-page.html',
   styleUrls: ['./landing-page.scss'],
 })
@@ -26,6 +28,9 @@ export class LandingPage implements OnInit {
   private fb = inject(FormBuilder);
   private storage = inject(StorageService);
   private candidateService = inject(CandidateService);
+  private dialog = inject(MatDialog);
+
+  // constructor(private dialog: MatDialog){}
 
   ngOnInit(): void {
     this.storage.incrementVisits();
@@ -112,38 +117,40 @@ export class LandingPage implements OnInit {
 
   onSubmit(): void {
     if (this.registrationForm.valid) {
-      this.candidateService.saveCandidate(this.registrationForm.getRawValue());
-      this.successMessage =
-        this.formType === 'edit'
-          ? 'Your registration has been updated.'
-          : 'You have successfully registered.';
-      this.resetForm();
-      setTimeout(() => {
-        this.successMessage = '';
-      }, 10000);
+      const exist = this.candidateService.checkIfExist(this.registrationForm.get('email')?.value);
+      if (exist && this.formType !== 'edit') {
+        const dialogRef = this.dialog.open(ConfirmDialog, {
+          data: {
+            title: 'Email Already Exists',
+            message:
+              'A user with this email already exists. Do you want to update the information?',
+          },
+        });
+        dialogRef.afterClosed().subscribe((res) => {
+          if (res) {
+            this.loadUpdateForm(exist);
+          } else {
+            this.resetForm();
+          }
+        });
+      } else {
+        this.candidateService.saveCandidate(this.registrationForm.getRawValue());
+        this.successMessage =
+          this.formType === 'edit'
+            ? 'Your registration has been updated.'
+            : 'You have successfully registered.';
+        this.resetForm();
+        setTimeout(() => {
+          this.successMessage = '';
+        }, 10000);
+      }
     }
   }
 
   onEmailSubmit(): void {
-    const exist = this.candidateService
-      .candidates()
-      .find((c) => c.email === this.registrationForm.get('email')?.value);
+    const exist = this.candidateService.checkIfExist(this.registrationForm.get('email')?.value);
     if (exist) {
-      this.formType = 'edit';
-
-      this.registrationForm.setValue({
-        profileImage: exist.profileImage,
-        fullName: exist.fullName,
-        email: exist.email,
-        phone: exist.phone,
-        age: exist.age,
-        city: exist.city,
-        hobbies: exist.hobbies,
-        reason: exist.reason,
-      });
-
-      this.selectedImg = exist.profileImage;
-      this.registrationForm.get('email')?.disable();
+      this.loadUpdateForm(exist);
     } else {
       this.errorMessage = 'The email does not exist. Please register.';
 
@@ -151,5 +158,23 @@ export class LandingPage implements OnInit {
         this.successMessage = '';
       }, 10000);
     }
+  }
+
+  loadUpdateForm(exist: Candidate) {
+    this.formType = 'edit';
+
+    this.registrationForm.setValue({
+      profileImage: exist.profileImage,
+      fullName: exist.fullName,
+      email: exist.email,
+      phone: exist.phone,
+      age: exist.age,
+      city: exist.city,
+      hobbies: exist.hobbies,
+      reason: exist.reason,
+    });
+
+    this.selectedImg = exist.profileImage;
+    this.registrationForm.get('email')?.disable();
   }
 }
