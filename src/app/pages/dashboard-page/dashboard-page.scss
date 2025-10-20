@@ -24,7 +24,6 @@
     }
 
     &__monitor {
-      font-size: 18px;
       background: $natural-color;
       display: flex;
       align-items: center;
@@ -33,9 +32,10 @@
       color: $dark-color;
       border: 2px solid $natural-color;
       height: 30px;
-      font-size: 18px;
+      font-size: 14px;
       font-weight: 500;
       padding: 5px;
+      width: 100%;
     }
   }
 
@@ -76,7 +76,7 @@
           }
           &__summary {
             &__cell {
-              max-width: 300px;
+              max-width: 150px;
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
@@ -100,15 +100,30 @@
 
 @include desktop {
   .dashboard {
-    &__monitor {
-      width: 500px;
-      height: 40px;
+    &__header {
+      &__monitor {
+        width: auto;
+        font-size: 18px;
+        height: 40px;
+      }
     }
 
     &__dashboard-content {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       grid-column-gap: 20px;
+
+      &__table-wrapper {
+        &__container {
+          &__table {
+            &__summary {
+              &__cell {
+                max-width: 300px;
+              }
+            }
+          }
+        }
+      }
 
       &__map {
         height: auto;

@@ -29,9 +29,6 @@ export class LandingPage implements OnInit {
   private storage = inject(StorageService);
   private candidateService = inject(CandidateService);
   private dialog = inject(MatDialog);
-
-  // constructor(private dialog: MatDialog){}
-
   ngOnInit(): void {
     this.storage.incrementVisits();
     this._buildRegisterForm();
@@ -44,6 +41,7 @@ export class LandingPage implements OnInit {
       if (field.required) validators.push(Validators.required);
       if (field.minLength) validators.push(Validators.minLength(field.minLength));
       if (field.minAge) validators.push(Validators.min(field.minAge));
+      if (field.maxAge) validators.push(Validators.max(field.maxAge));
       if (field.name === 'email') validators.push(Validators.email);
 
       group[field.name] = ['', validators];
@@ -64,6 +62,9 @@ export class LandingPage implements OnInit {
 
     if (control.hasError('min'))
       return `You must be at least ${control.getError('min').min} years old`;
+
+    if (control.hasError('max'))
+      return `You must be under ${control.getError('max').max} years old`;
 
     return '';
   }
@@ -134,7 +135,15 @@ export class LandingPage implements OnInit {
           }
         });
       } else {
-        this.candidateService.saveCandidate(this.registrationForm.getRawValue());
+        const isSuccess = this.candidateService.saveCandidate(this.registrationForm.getRawValue());
+
+        if (!isSuccess) {
+          this.errorMessage = 'You can update your registration only within 3 days';
+          setTimeout(() => (this.errorMessage = ''), 10000);
+          this.resetForm();
+          return;
+        }
+
         this.successMessage =
           this.formType === 'edit'
             ? 'Your registration has been updated.'

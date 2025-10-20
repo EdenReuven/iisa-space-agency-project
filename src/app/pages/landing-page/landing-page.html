@@ -74,6 +74,8 @@
 
     } } @if(successMessage){
     <div class="landing-page__form__success-message">{{ successMessage }}</div>
+    } @if(errorMessage){
+    <div class="landing-page__form__error-message">{{ errorMessage }}</div>
     }
 
     <div class="landing-page__form__submit-btn">

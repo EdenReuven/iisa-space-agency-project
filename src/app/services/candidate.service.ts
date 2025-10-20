@@ -26,13 +26,13 @@ export class CandidateService {
     return this.candidates().find((c) => c.email === email);
   }
 
-  saveCandidate(candidate: Candidate) {
+  saveCandidate(candidate: Candidate): boolean {
     const candidatesList = this.candidates();
     const foundIndex = candidatesList.findIndex((x) => x.email === candidate.email);
     candidate.city = this.cityNameFormat(candidate.city);
 
     candidate.createdDate = foundIndex === -1 ? new Date() : candidatesList[foundIndex].createdDate;
-    if (!this.isUpdateAllowed(candidate.createdDate)) return;
+    if (!this.isUpdateAllowed(candidate.createdDate)) return false;
 
     this.storageService.saveCandidate(candidate).subscribe(() => {
       const updatedList =
@@ -44,6 +44,7 @@ export class CandidateService {
 
       this.bc.postMessage({ type: 'update-candidate', candidate });
     });
+    return true;
   }
 
   cityNameFormat(city: string) {

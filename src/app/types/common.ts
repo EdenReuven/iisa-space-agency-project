@@ -12,6 +12,7 @@ export interface RegisterForm {
   required: boolean;
   minLength?: number;
   minAge?: number;
+  maxAge?:number;
 }
 
 export interface Candidate {

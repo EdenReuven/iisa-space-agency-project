@@ -32,6 +32,7 @@ export const registerFields: RegisterForm[] = [
     type: 'number',
     required: true,
     minAge: 18,
+    maxAge: 99,
   },
   {
     name: 'city',
