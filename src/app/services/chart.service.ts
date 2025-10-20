@@ -36,9 +36,11 @@ export class ChartService {
   getColors(length: number) {
     const chartColors = [];
     const colors = ['#4361EE', '#3A86FF', '#5BC0EB', '#9D4EDD', '#7209B7', '#B5179E'];
+
     for (let i = 0; i < length; i++) {
       chartColors.push(colors[i % colors.length]);
     }
+    
     return chartColors;
   }
 }

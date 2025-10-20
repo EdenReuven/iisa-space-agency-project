@@ -3,6 +3,6 @@ import { DashboardPage, LandingPage } from './pages';
 
 
 export const routes: Routes = [
-    { path: '', component: LandingPage },
-    { path: 'dashboard', component: DashboardPage },
+    { path: '', component: LandingPage, data: { title: 'IISA | Landing Page' }  },
+    { path: 'dashboard', component: DashboardPage ,data: { title: 'IISA | Dashboard' } },
 ];

@@ -1,7 +1,6 @@
 import {
   AfterViewInit,
   Component,
-  computed,
   effect,
   ElementRef,
   inject,
@@ -68,9 +67,11 @@ export class DashboardPage implements AfterViewInit {
         }
       }
     });
+
     this.storageService.bc.onmessage = (event) => {
       this.totalVisits.set(event.data);
     };
+
     this.storageService.getVisitors().subscribe((count) => {
       this.totalVisits.set(count);
     });
@@ -83,6 +84,7 @@ export class DashboardPage implements AfterViewInit {
       'Candidates Ages Breakdown',
       'bar'
     );
+
     this.cityChart = this.chartService.initChart(
       this.cityChartRef.nativeElement,
       this._buildCityGroups(),
@@ -104,6 +106,7 @@ export class DashboardPage implements AfterViewInit {
     this.ageChart.data.datasets[0].data = Object.values(ages);
     this.ageChart.update();
   }
+
   private _buildAgeGroups() {
     this.candidates().forEach((c) => {
       if (c.age <= 25) this.ageGroups['18-25']++;
@@ -184,6 +187,7 @@ export class DashboardPage implements AfterViewInit {
         +c.age === +term
     );
   }
+  
   applyFilter(event: Event) {
     const value = (event.target as HTMLInputElement).value;
     this.filterTerm.set(value);

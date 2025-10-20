@@ -25,6 +25,7 @@ export interface Candidate {
   profileImage?: string | ArrayBuffer | null;
   createdDate: Date;
 }
+
 export interface IisaDB extends DBSchema {
   candidates: {
     key: string;

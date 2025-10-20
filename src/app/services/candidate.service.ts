@@ -8,15 +8,15 @@ export class CandidateService {
   private bc = new BroadcastChannel('candidates-channel');
 
   constructor(private storageService: StorageService) {
-    this.loadCandidate();
+    this._loadCandidate();
     this.bc.onmessage = (event) => {
       if (event.data?.type === 'update-candidate') {
-        this.loadCandidate();
+        this._loadCandidate();
       }
     };
   }
 
-  private loadCandidate() {
+  private _loadCandidate() {
     this.storageService.getAllCandidates().subscribe((candidates) => {
       this.candidates.set(candidates);
     });

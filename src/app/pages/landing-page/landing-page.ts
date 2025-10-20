@@ -102,6 +102,7 @@ export class LandingPage implements OnInit {
     this.registrationForm.reset();
     this.registrationForm.get('email')?.enable();
     this.selectedImg = null;
+
     Object.keys(this.registrationForm.controls).forEach((key) => {
       this.registrationForm.get(key)?.markAsUntouched();
       this.registrationForm.get(key)?.setErrors(null);
@@ -129,6 +130,7 @@ export class LandingPage implements OnInit {
       .find((c) => c.email === this.registrationForm.get('email')?.value);
     if (exist) {
       this.formType = 'edit';
+
       this.registrationForm.setValue({
         profileImage: exist.profileImage,
         fullName: exist.fullName,
@@ -139,13 +141,15 @@ export class LandingPage implements OnInit {
         hobbies: exist.hobbies,
         reason: exist.reason,
       });
+
       this.selectedImg = exist.profileImage;
       this.registrationForm.get('email')?.disable();
     } else {
       this.errorMessage = 'The email does not exist. Please register.';
+
       setTimeout(() => {
         this.successMessage = '';
-      }, 30000);
+      }, 10000);
     }
   }
 }

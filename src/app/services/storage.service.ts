@@ -52,20 +52,18 @@ export class StorageService {
     return this.db$.pipe(switchMap((db) => from(db.getAll('candidates'))));
   }
 
-  updateVisits(): Observable<string> {
-    return this.db$.pipe(
-      switchMap((db) =>
+  incrementVisits(): void {
+  this.db$
+    .pipe(
+      switchMap(db =>
         from(db.get('visitorsCounter', 'totalVisits')).pipe(
-          switchMap((current) => from(db.put('visitorsCounter', (current || 0) + 1, 'totalVisits')))
+          switchMap(current => from(db.put('visitorsCounter', (current || 0) + 1, 'totalVisits'))),
+          switchMap(() => from(db.get('visitorsCounter', 'totalVisits')))
         )
       )
-    );
-  }
-  incrementVisits(): void {
-    this.updateVisits().subscribe(() => {
-      this.getVisitors().subscribe((count) => {
-        this.bc.postMessage(count);
-      });
+    )
+    .subscribe(count => {
+      this.bc.postMessage(count);
     });
   }
 

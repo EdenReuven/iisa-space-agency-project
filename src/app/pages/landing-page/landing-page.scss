@@ -13,6 +13,7 @@
     flex-direction: column;
     align-items: center;
     gap: 25px;
+
     &__title {
       color: $primary-color;
     }
@@ -32,6 +33,7 @@
       padding: 10px;
     }
   }
+
   &__switch-form {
     display: flex;
     align-items: center;
@@ -42,10 +44,12 @@
     padding: 10px;
     border-radius: 5px;
     cursor: pointer;
+
     &__main {
       font-size: 24px;
       color: $dark-color;
     }
+
     &__sub {
       line-height: 24px;
       font-size: 16px;
@@ -79,9 +83,11 @@
         }
       }
     }
+
     &__only-email {
       grid-column: 1 / -1;
     }
+
     &__submit-btn,
     &__check-btn,
     &__register-btn {
@@ -89,10 +95,12 @@
       display: flex;
       justify-content: center;
       grid-column: 1 / -1;
+
       &__btn {
         width: 500px;
       }
     }
+
     &__success-message {
       padding: 12px 20px;
       background-color: $success-bg;
@@ -107,6 +115,7 @@
       opacity: 0;
       animation: fadeInOut 30s forwards;
     }
+
     &__error-message {
       padding: 12px 20px;
       background-color: $error-bg;
@@ -133,9 +142,11 @@
       background: $background-color;
       width: 80%;
       border-radius: 5px;
+
       &.email-form {
         width: fit-content;
       }
+      
       &__profile-picture {
         margin-top: 0;
         grid-column: 1 / -1;

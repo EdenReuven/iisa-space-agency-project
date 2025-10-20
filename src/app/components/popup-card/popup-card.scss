@@ -7,6 +7,7 @@
   flex-direction: column;
   justify-content: space-between;
   display: flex;
+
   &__close-btn {
     color: $primary-color;
     position: absolute;
@@ -18,15 +19,19 @@
     cursor: pointer;
     font-weight: 600;
   }
+
   &__content {
     padding: 20px 20px 5px;
+
     &__header {
       display: flex;
       align-items: center;
       gap: 15px;
+
       &__title {
         color: $primary-color;
       }
+
       &__avatar {
         width: 80px;
         height: 80px;
@@ -35,6 +40,7 @@
         border: 2px solid $secondary-color;
       }
     }
+
     &__items {
       display: flex;
       flex-direction: column;
@@ -42,10 +48,12 @@
       color: $dark-color;
       overflow: auto;
       max-height: 220px;
+
       &__item {
         display: flex;
         gap: 15px;
         font-size: 18px;
+
         &__label {
           font-weight: 600;
         }
@@ -57,12 +65,14 @@
     display: flex;
     justify-content: space-between;
     padding: 0 15px 15px;
+
     &__prev,
     &__next {
       font-size: 32px;
       background: transparent;
       color: $primary-color;
       font-weight: 600;
+
       &:disabled {
         color: $natural-color;
         cursor: not-allowed;
@@ -75,6 +85,7 @@
   .popup-card {
     width: 550px;
     height: 350px;
+
     &__content {
       &__header {
         &__avatar {
@@ -82,6 +93,7 @@
           height: 100px;
         }
       }
+
       &__items {
         display: grid;
         grid-template-columns: repeat(2, 1fr);

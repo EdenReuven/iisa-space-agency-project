@@ -48,6 +48,7 @@ export class MapService {
       });
     });
   }
+
   getMap(): google.maps.Map {
     return this.map;
   }
@@ -63,6 +64,7 @@ export class MapService {
         map: this.map,
         title: city,
       });
+      
       this.markers.push(marker);
     }
   }
